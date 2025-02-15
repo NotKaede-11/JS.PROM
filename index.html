@@ -251,7 +251,6 @@
     <script>
         document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 
-        // Draggable functionality
         const dragElement = document.querySelector('.tool-description');
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
@@ -329,19 +328,17 @@
         }
 
         function isValidFloat(value) {
-            // Updated to accept numbers with 1 or more decimal places
             return /^\d+\.\d+$/.test(value);
         }
 
         function roundNumber(num) {
             const parts = num.toString().split(".");
             if (parts.length === 1) {
-                return num; // Integer case
+                return num;
             }
             
-            // Handle decimal numbers
             if (parts[1].length === 1) {
-                return num; // Single decimal place, no rounding needed
+                return num;
             } else if (parts[1].length === 2) {
                 const hundredths = parseInt(parts[1][1]);
                 if (hundredths >= 5) {
