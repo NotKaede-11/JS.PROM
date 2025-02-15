@@ -221,7 +221,7 @@
 <body>
     <div class="tool-description">
         <h3>Tool Description</h3>
-        <p>This code creates the Precision Rounding Assistant, a web application that allows users to upload and process CSV or TXT files. It reads the uploaded file, extracts floating-point numbers, and rounds them to two decimal places when necessary. The interface includes a light/dark mode toggle, a user-friendly file upload section, and a results display area. A loading spinner indicates when a file is being processed. The page is styled with CSS for readability and responsiveness, while JavaScript handles file reading, data extraction, and number rounding.</p>
+        <p>This tool processes CSV or TXT files containing decimal numbers. It accepts numbers with any number of decimal places and rounds them according to specific rules. Single decimal numbers remain unchanged, while numbers with two or more decimal places are rounded appropriately.</p>
     </div>
 
     <div class="main-content">
@@ -272,11 +272,9 @@
             pos3 = e.clientX;
             pos4 = e.clientY;
 
-            // Calculate new position
             let newTop = dragElement.offsetTop - pos2;
             let newLeft = dragElement.offsetLeft - pos1;
 
-            // Add boundaries
             const maxX = window.innerWidth - dragElement.offsetWidth;
             const maxY = window.innerHeight - dragElement.offsetHeight;
 
@@ -331,14 +329,20 @@
         }
 
         function isValidFloat(value) {
-            return /^\d+\.\d{2,}$/.test(value);
+            // Updated to accept numbers with 1 or more decimal places
+            return /^\d+\.\d+$/.test(value);
         }
 
         function roundNumber(num) {
             const parts = num.toString().split(".");
-            if (parts.length === 1 || parts[1].length === 1) {
-                return num;
-            } else if (parts.length === 2) {
+            if (parts.length === 1) {
+                return num; // Integer case
+            }
+            
+            // Handle decimal numbers
+            if (parts[1].length === 1) {
+                return num; // Single decimal place, no rounding needed
+            } else if (parts[1].length === 2) {
                 const hundredths = parseInt(parts[1][1]);
                 if (hundredths >= 5) {
                     return Math.ceil(num * 10) / 10;
