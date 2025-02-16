@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Set character encoding and ensure proper rendering on mobile devices -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Page Title -->
     <title>Precision Rounding Assistant</title>
+    
+    <!-- Link to Font Awesome CDN for using icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Internal CSS for styling the page -->
     <style>
+        /* Base styling for the body element */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f5f5;
@@ -17,11 +25,13 @@
             position: relative;
         }
 
+        /* Dark mode styling for the body */
         body.dark-mode {
             background-color: #1a1a1a;
             color: #ffffff;
         }
 
+        /* Styling for the draggable tool description box */
         .tool-description {
             width: 300px;
             padding: 20px;
@@ -41,24 +51,29 @@
             left: 50px;
         }
 
+        /* Hover effect to enhance the visual appeal of the tool description box */
         .tool-description:hover {
             box-shadow: 0 4px 15px rgba(107, 91, 149, 0.3);
         }
 
+        /* Heading styling inside the tool description box */
         .tool-description h3 {
             color: #6b5b95;
             font-size: 20px;
             margin-bottom: 15px;
         }
 
+        /* Dark mode adjustments for the tool description box */
         body.dark-mode .tool-description {
             background-color: rgba(143, 127, 184, 0.1);
         }
 
+        /* Dark mode adjustments for the heading in the tool description */
         body.dark-mode .tool-description h3 {
             color: #8f7fb8;
         }
 
+        /* Main content container centered on the page */
         .main-content {
             max-width: 900px;
             margin: 0 auto;
@@ -66,6 +81,7 @@
             z-index: 1;
         }
 
+        /* Main heading styling */
         h1 {
             color: #6b5b95;
             font-size: 36px;
@@ -73,10 +89,12 @@
             margin-bottom: 30px;
         }
 
+        /* Dark mode adjustment for the main heading */
         body.dark-mode h1 {
             color: #8f7fb8;
         }
 
+        /* Container styling for interactive content such as file upload and output display */
         .container {
             background-color: #ffffff;
             padding: 40px;
@@ -84,11 +102,13 @@
             box-shadow: 0 4px 15px rgba(107, 91, 149, 0.1);
         }
 
+        /* Dark mode adjustments for the container */
         body.dark-mode .container {
             background-color: #2d2d2d;
             box-shadow: 0 4px 15px rgba(107, 91, 149, 0.3);
         }
 
+        /* Styling for the clickable file upload area */
         .file-upload-container {
             text-align: center;
             padding: 30px;
@@ -99,15 +119,18 @@
             cursor: pointer;
         }
 
+        /* Dark mode adjustments for the file upload container */
         body.dark-mode .file-upload-container {
             border-color: #8f7fb8;
         }
 
+        /* Hover effect for the file upload container to indicate interactivity */
         .file-upload-container:hover {
             border-color: #ff6f61;
             background-color: rgba(107, 91, 149, 0.1);
         }
 
+        /* Label styling for the file upload prompt */
         .file-upload-label {
             display: block;
             font-size: 18px;
@@ -116,24 +139,29 @@
             cursor: pointer;
         }
 
+        /* Dark mode adjustments for the file upload label */
         body.dark-mode .file-upload-label {
             color: #8f7fb8;
         }
 
+        /* Hide the default file input element */
         #fileInput {
             display: none;
         }
 
+        /* Styling for the upload icon */
         .upload-icon {
             font-size: 40px;
             color: #6b5b95;
             margin-bottom: 15px;
         }
 
+        /* Dark mode adjustments for the upload icon */
         body.dark-mode .upload-icon {
             color: #8f7fb8;
         }
 
+        /* Styling for the output area where results are shown */
         #output {
             background-color: #f8f9fa;
             padding: 25px;
@@ -145,14 +173,16 @@
             line-height: 1.6;
             max-height: 400px;
             overflow-y: auto;
-            display: none;
+            display: none; /* Hidden until results are available */
         }
 
+        /* Dark mode adjustments for the output area */
         body.dark-mode #output {
             background-color: #363636;
             color: #00ff00;
         }
 
+        /* Styling for the theme toggle button positioned at the top right */
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -168,20 +198,24 @@
             z-index: 1001;
         }
 
+        /* Hover effect for the theme toggle button */
         .theme-toggle:hover {
             color: #ff6f61;
         }
 
+        /* Dark mode adjustments for the theme toggle button */
         body.dark-mode .theme-toggle {
             color: #8f7fb8;
         }
 
+        /* Styling for the loading spinner container (hidden by default) */
         .loading-spinner {
             display: none;
             text-align: center;
             margin: 20px 0;
         }
 
+        /* Styling for the spinner itself */
         .spinner {
             width: 40px;
             height: 40px;
@@ -192,16 +226,19 @@
             margin: 0 auto;
         }
 
+        /* Dark mode adjustments for the spinner */
         body.dark-mode .spinner {
             border-color: #2d2d2d;
             border-top-color: #8f7fb8;
         }
 
+        /* Keyframes for spinner rotation animation */
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
+        /* Styling for individual result items displayed after file processing */
         .result-item {
             padding: 10px;
             margin: 5px 0;
@@ -211,6 +248,7 @@
             border-left: 4px solid #6b5b95;
         }
 
+        /* Dark mode adjustments for result items */
         body.dark-mode .result-item {
             background-color: #404040;
             box-shadow: 0 2px 5px rgba(107, 91, 149, 0.3);
@@ -219,43 +257,58 @@
     </style>
 </head>
 <body>
+    <!-- Draggable tool description box with details about the functionality -->
     <div class="tool-description">
         <h3>Tool Description</h3>
         <p>This tool processes CSV or TXT files containing decimal numbers. It accepts numbers with any number of decimal places and rounds them according to specific rules. Single decimal numbers remain unchanged, while numbers with two or more decimal places are rounded appropriately.</p>
     </div>
 
+    <!-- Main content container -->
     <div class="main-content">
+        <!-- Theme toggle button to switch between light and dark modes -->
         <button class="theme-toggle" onclick="toggleDarkMode()">
-            <i class="fas fa-sun"></i>
+            <i class="fas fa-sun"></i> <!-- Icon changes based on the current theme -->
         </button>
 
+        <!-- Main page heading -->
         <h1>Precision Rounding Assistant</h1>
+        
+        <!-- Container for file upload and output display -->
         <div class="container">
+            <!-- File upload area styled as a clickable container -->
             <div class="file-upload-container" onclick="document.getElementById('fileInput').click()">
-                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <i class="fas fa-cloud-upload-alt upload-icon"></i> <!-- Cloud upload icon -->
                 <label class="file-upload-label">
                     Click to upload CSV or TXT file
                 </label>
+                <!-- Hidden file input; triggered by clicking the file-upload-container -->
                 <input type="file" id="fileInput" accept=".csv,.txt" />
             </div>
 
+            <!-- Loading spinner displayed during file processing -->
             <div class="loading-spinner">
                 <div class="spinner"></div>
                 <p>Processing file...</p>
             </div>
 
+            <!-- Output area to display results after processing the file -->
             <div id="output"></div>
         </div>
     </div>
 
+    <!-- JavaScript for interactivity and file processing -->
     <script>
+        // Add event listener for file selection
         document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 
+        // Variables for implementing drag functionality on the tool description box
         const dragElement = document.querySelector('.tool-description');
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
+        // Initialize dragging on mouse down
         dragElement.onmousedown = dragMouseDown;
 
+        // Function to start dragging the tool description box
         function dragMouseDown(e) {
             e.preventDefault();
             pos3 = e.clientX;
@@ -264,6 +317,7 @@
             document.onmousemove = elementDrag;
         }
 
+        // Function to update position of the box while dragging
         function elementDrag(e) {
             e.preventDefault();
             pos1 = pos3 - e.clientX;
@@ -271,44 +325,50 @@
             pos3 = e.clientX;
             pos4 = e.clientY;
 
+            // Calculate new top and left positions while ensuring the element stays within the viewport
             let newTop = dragElement.offsetTop - pos2;
             let newLeft = dragElement.offsetLeft - pos1;
-
             const maxX = window.innerWidth - dragElement.offsetWidth;
             const maxY = window.innerHeight - dragElement.offsetHeight;
-
             newTop = Math.min(Math.max(0, newTop), maxY);
             newLeft = Math.min(Math.max(0, newLeft), maxX);
-
             dragElement.style.top = newTop + "px";
             dragElement.style.left = newLeft + "px";
         }
 
+        // Function to stop the dragging action
         function closeDragElement() {
             document.onmouseup = null;
             document.onmousemove = null;
         }
 
+        // Function to handle file selection
         function handleFileSelect(event) {
             const file = event.target.files[0];
             if (!file) return;
 
+            // Show loading spinner and hide output area during processing
             document.querySelector('.loading-spinner').style.display = 'block';
             document.getElementById("output").style.display = 'none';
 
+            // Read the selected file as text using FileReader
             const reader = new FileReader();
             reader.onload = function(e) {
                 const contents = e.target.result;
+                // Simulate processing delay for better UX
                 setTimeout(() => processFileContents(contents, file.name), 1000);
             };
             reader.readAsText(file);
         }
 
+        // Function to process the file content and update the output area
         function processFileContents(contents, fileName) {
+            // Split content by new lines and filter out any empty lines
             const lines = contents.split(/\r?\n/).filter(line => line.trim() !== '');
             let output = "";
             const isCSV = fileName.toLowerCase().endsWith(".csv");
 
+            // Loop through each line and value (for CSV files)
             for (let line of lines) {
                 const values = isCSV ? line.split(",") : [line];
                 for (let value of values) {
@@ -316,21 +376,25 @@
                     if (isValidFloat(value)) {
                         const originalNumber = parseFloat(value);
                         const rounded = roundNumber(originalNumber);
+                        // Create an HTML snippet for each result
                         output += `<div class="result-item">Original: ${value} → Rounded: ${rounded.toFixed(2)}</div>`;
                     }
                 }
             }
 
+            // Hide the loading spinner and display the results
             document.querySelector('.loading-spinner').style.display = 'none';
             const outputElement = document.getElementById("output");
             outputElement.innerHTML = output || "<div class='result-item'>No valid float numbers found.</div>";
             outputElement.style.display = 'block';
         }
 
+        // Utility function to validate if a string represents a float number
         function isValidFloat(value) {
             return /^\d+\.\d+$/.test(value);
         }
 
+        // Function to round numbers based on their decimal precision
         function roundNumber(num) {
             const parts = num.toString().split(".");
             if (parts.length === 1) {
@@ -351,6 +415,7 @@
             }
         }
 
+        // Function to toggle between light and dark themes
         function toggleDarkMode() {
             document.body.classList.toggle("dark-mode");
             const icon = document.querySelector('.theme-toggle i');
